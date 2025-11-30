@@ -27,10 +27,11 @@
 |-|:-|
 | [L-1](#L-1) | Missing `_disableInitializers()` inside constructor of UUPS implementation. |
 | [L-2](#L-2) | Missing event emissions for crucial state changes in all contracts. |
-| [L-3](#L-3) | Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in future OZ library upgrade. |
-| [L-4](#L-4) | Variables defined with the `immutable` keyword are incompatible with UUPS concept. |
+| [L-3](#L-3) | Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in a future OZ library upgrade. |
+| [L-4](#L-4) | Variables defined with the `immutable` keyword are incompatible with UUPS the concept. |
 
 ## High issues description
+<br>
 ### <a id="H-1" name="H-1"></a>[H-1] Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS.
 
 Contract `src/HalbornLoans.sol` lacks of `onERC721Received` callback meaning that using `safeTransferFrom` in the context of transfering NFT from the user to the contract will fail. The solutions based on the business logic of the smart contract could be to change `safeTransferFrom` to `transferFrom` or implement the `onERC721Received` callback to be part of the smart contract.
@@ -148,7 +149,7 @@ Missing events in significant scenarios, such as important configuration changes
 - `src/HalbornToken.sol`
 - `src/HalbornLoans.sol`
 
-### <a id="L-3" name="L-3"></a>[L-3] Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in future OZ library upgrade.
+### <a id="L-3" name="L-3"></a>[L-3] Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in a future OZ library upgrade.
 
 The protocol made a local fork of OpenZeppelin’s `MulticallUpgradeable.sol` located at `src/MulticallUpgradeable.sol`, but inside of it the file is still importing libraries directly from the OpenZeppelin’s library package:
 ```solidity
@@ -157,7 +158,7 @@ import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/
 ```
 This could lead to future issues if OZ decide to upgrade the imported libraries leading to incompatibility with local forked `src/MulticallUpgradeable.sol`. The solution is to include in the local fork all of the files used by the `src/MulticallUpgradeable.sol`.
 
-### <a id="L-4" name="L-4"></a>[L-4] Variables defined with the `immutable` keyword are incompatible with UUPS concept.
+### <a id="L-4" name="L-4"></a>[L-4] Variables defined with the `immutable` keyword are incompatible with UUPS the concept.
 
 Technically it's possible to have `immutable` variables inside UUPS implementation and set them in the constructor, but this is more of a semantic issue and OpenZeppelin is forcing builders to not follow this approach by explicitly forbidding it in the `@openzeppelin/hardhat-upgrades` package to prevent confusion. 
 
