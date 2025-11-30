@@ -19,8 +19,8 @@
 ## Medium issues
 | Issue | Description |
 |-|:-|
-| [M-1](#M-1) | Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong validation to check if NFT ID has been minted already. |
-| [M-2](#M-2) | Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision leading to DOS when minting NFTs. |
+| [M-1](#M-1) | Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong NFT ID validation. |
+| [M-2](#M-2) | Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision when minting NFTs. |
 
 ## Low issues
 | Issue | Description |
@@ -103,12 +103,23 @@ The vulnerability exists at the contracts listed below:
 - `src/HalbornLoans.sol`
 <br/><br/>
 
-
 ### <a id="H-7" name="H-7"></a>[H-7] Method `multicall` inside `src/MulticallUpgradeable.sol` allows for malicious batching of logic.
+Method `multicall` at `src/MulticallUpgradeable.sol` allows for delegatecall batching of actions, but the problem here is that the method includes the `payable` keyword. Let's say `price` at `src/HalbornNFT.sol` is 1 ether and then an attacker can pass 1 ether to the `multicall` method and spam as multicalls multiple requests to method `mintBuyWithETH`. Validation `require(msg.value == price, "Invalid Price");` will always be true on each request to `mintBuyWithETH`, because the `msg.value` data doesn't split on each iteration of the loop in `multicall`. The impact is that with just 1 ether an attacker mint hundreds of NFTs.
+
+Replace:
+```solidity
+function multicall(bytes[] calldata data) external payable returns (bytes[] memory results)
+```
+With:
+```solidity
+function multicall(bytes[] calldata data) external returns (bytes[] memory results)
+```
+
+<br/><br/>
 
 
 ## Medium issues description
-### <a id="M-1" name="M-1"></a>[M-1] Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong validation to check if NFT ID has been minted already.
+### <a id="M-1" name="M-1"></a>[M-1] Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong NFT ID validation.
 
 Method `mintAirdrops` currently checks if a NFT has been already minted, but it has to be the other way around - it has to check if NFT is not minted yet, because down in the method logic `_safeMint` will revert with error `ERC721InvalidSender()`, because the method will be trying to mint a NFT which is already minted. Reference: [https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/token/ERC721/ERC721Upgradeable.sol#L292C20-L292C39]
 
@@ -123,7 +134,7 @@ require(!_exists(id), "Token already minted");
 <br/><br/>
 
 
-### <a id="M-2" name="M-2"></a>[M-2] Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision leading to DOS when minting NFTs.
+### <a id="M-2" name="M-2"></a>[M-2] Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision when minting NFTs.
 
 Two methods inside `src/HalbornNFT.sol` can be used to mint new NFTs - methods `mintAirdrops` and `mintBuyWithETH`. `mintAirdrops` mints NFT by a given NFT ID, `mintBuyWithETH` mints NFT by a state counter `idCounter`. The problem is that the counter starts from value 0 and it increases by 1 everytime `mintBuyWithETH` is called. Let's suppose Alice minted NFT ID 2 by requesting `mintAirdrops` and now Bob and Jake are requesting `mintBuyWithETH`. Bob will successfully mint his NFT with ID 1, but Jake will fail, because `mintBuyWithETH` will try to mint a NFT with ID 2, but this NFT ID has been already minted by Alice. The result is collision of the NFT IDs leading to a possible DOS of method `mintBuyWithETH`.
 <br/><br/>
