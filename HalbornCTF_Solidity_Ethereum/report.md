@@ -32,6 +32,7 @@
 
 ## High issues description
 <br>
+
 ### <a id="H-1" name="H-1"></a>[H-1] Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS.
 
 Contract `src/HalbornLoans.sol` lacks of `onERC721Received` callback meaning that using `safeTransferFrom` in the context of transfering NFT from the user to the contract will fail. The solutions based on the business logic of the smart contract could be to change `safeTransferFrom` to `transferFrom` or implement the `onERC721Received` callback to be part of the smart contract.
