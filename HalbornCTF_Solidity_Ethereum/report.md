@@ -8,27 +8,27 @@
 ## High issues
 | Issue | Description |
 |-|:-|
-| [H-1](#H-1) | Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS. |
-| [H-2](#H-2) | Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `withdrawCollateral` is vulnerable to reentrancy attack. |
-| [H-3](#H-3) | Wrong validation at `src/HalbornLoans.sol`'s method `getLoan` allows for draining the protocol funds. |
-| [H-4](#H-4) | Wrong collateral record update at `src/HalbornLoans.sol`'s method `returnLoan` leading to loss for the borrower. |
-| [H-5](#H-5) | Method `setMerkleRoot` inside `src/HalbornNFT.sol` lacks of access control. |
-| [H-6](#H-6) | Internal method `_authorizeUpgrade` lacks of access control for upgrading the UUPS implementation. |
-| [H-7](#H-7) | Method `multicall` inside `src/MulticallUpgradeable.sol` allows for malicious batching of logic. |
+| [H-1](#user-content-H-1) | Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS. |
+| [H-2](#user-content-H-2) | Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `withdrawCollateral` is vulnerable to reentrancy attack. |
+| [H-3](#user-content-H-3) | Wrong validation at `src/HalbornLoans.sol`'s method `getLoan` allows for draining the protocol funds. |
+| [H-4](#user-content-H-4) | Wrong collateral record update at `src/HalbornLoans.sol`'s method `returnLoan` leading to loss for the borrower. |
+| [H-5](#user-content-H-5) | Method `setMerkleRoot` inside `src/HalbornNFT.sol` lacks of access control. |
+| [H-6](#user-content-H-6) | Internal method `_authorizeUpgrade` lacks of access control for upgrading the UUPS implementation. |
+| [H-7](#user-content-H-7) | Method `multicall` inside `src/MulticallUpgradeable.sol` allows for malicious batching of logic. |
 
 ## Medium issues
 | Issue | Description |
 |-|:-|
-| [M-1](#M-1) | Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong NFT ID validation. |
-| [M-2](#M-2) | Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision when minting NFTs. |
+| [M-1](#user-content-M-1) | Method `mintAirdrops` inside `src/HalbornNFT.sol` includes wrong NFT ID validation. |
+| [M-2](#user-content-M-2) | Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision when minting NFTs. |
 
 ## Low issues
 | Issue | Description |
 |-|:-|
-| [L-1](#L-1) | Missing `_disableInitializers()` inside constructor of UUPS implementation. |
-| [L-2](#L-2) | Missing event emissions for crucial state changes in all contracts. |
-| [L-3](#L-3) | Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in a future OZ library upgrade. |
-| [L-4](#L-4) | Variables defined with the `immutable` keyword are incompatible with UUPS the concept. |
+| [L-1](#user-content-L-1) | Missing `_disableInitializers()` inside constructor of UUPS implementation. |
+| [L-2](#user-content-L-2) | Missing event emissions for crucial state changes in all contracts. |
+| [L-3](#user-content-L-3) | Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in a future OZ library upgrade. |
+| [L-4](#user-content-L-4) | Variables defined with the `immutable` keyword are incompatible with UUPS the concept. |
 
 ## High issues description
 ### <a id="H-1" name="H-1"></a>[H-1] Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS.
