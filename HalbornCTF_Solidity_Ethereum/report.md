@@ -6,7 +6,7 @@
     - [High Issues](#high-issues)
 
 ## Low issues
-| |Issue|
+| <div>Issue</div>  | Description |
 |-|:-|
 | [L-1](#L-1) | Missing `_disableInitializers()` inside constructor to prevent implementation from being hijacked. |
 | [L-2](#L-2) | Missing event emissions for crucial state changes in all contracts. |
