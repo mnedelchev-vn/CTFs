@@ -6,20 +6,20 @@
     - [High Issues](#high-issues)
 
 ## Low issues
-| <div>Issue</div>  | Description |
+| Issue | Description |
 |-|:-|
 | [L-1](#L-1) | Missing `_disableInitializers()` inside constructor to prevent implementation from being hijacked. |
 | [L-2](#L-2) | Missing event emissions for crucial state changes in all contracts. |
 | [L-3](#L-3) | Contract `MulticallUpgradeable` is a local fork of the OZ's `MulticallUpgradeable` which might become outdated in future OZ library upgrade. |
 
 ## Medium issues
-| |Issue|
+| Issue | Description |
 |-|:-|
 | [M-1](#M-1) | Method `mintAirdrops` inside `HalbornNFT.sol` includes wrong validation to check if NFT ID has been minted already. |
 | [M-2](#M-2) | Method `mintBuyWithETH` inside `HalbornNFT.sol` includes NFT ID collision leading to DOS when minting NFTs. |
 
 ## High issues
-| |Issue|
+| Issue | Description |
 |-|:-|
 | [H-1](#H-1) | Logic `nft.safeTransferFrom` at `HalbornLoans`'s method `depositNFTCollateral` leads to DOS as the `HalbornLoans` contract lacks of `onERC721Received` callback. |
 | [H-2](#H-2) | Logic `nft.safeTransferFrom` at `HalbornLoans`'s method `withdrawCollateral` is vulnerable to reentrancy attack. Checks-Effects-Interactions pattern is not applied. |
