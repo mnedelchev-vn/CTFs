@@ -1,6 +1,6 @@
 # Halborn's Solidity CTF report
 
-**Report**
+- **Report**
     - [Low Issues](#low-issues)
     - [Medium Issues](#medium-issues)
     - [High Issues](#high-issues)
