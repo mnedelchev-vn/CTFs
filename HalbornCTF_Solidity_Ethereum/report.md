@@ -34,13 +34,13 @@
 ### <a id="H-1" name="H-1"></a>[H-1] Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `depositNFTCollateral` leads to guaranteed DOS.
 
 Contract `src/HalbornLoans.sol` lacks of `onERC721Received` callback meaning that using `safeTransferFrom` in the context of transfering NFT from the user to the contract will fail. The solutions based on the business logic of the smart contract could be to change `safeTransferFrom` to `transferFrom` or implement the `onERC721Received` callback to be part of the smart contract.
-<br/>
+<br/><br/>
 
 
 ### <a id="H-2" name="H-2"></a>[H-2] Logic `nft.safeTransferFrom` at `src/HalbornLoans.sol`'s method `withdrawCollateral` is vulnerable to reentrancy attack.
 
 Inside method `withdrawCollateral` the actual withdraw of the NFT from the smart contract to the user through `nft.safeTransferFrom` is done before the state changes. This opens the possibility for malicious user smart contract to implement the `onERC721Received` and place inside of it a request to `getLoan`. The impact is that the user has successfully withdrawn the NFT and the same time received a loan. Apply the Checks-Effects-Interactions pattern where all state changes are done before the `nft.safeTransferFrom` request.
-<br/>
+<br/><br/>
 
 
 ### <a id="H-3" name="H-3"></a>[H-3] Wrong validation at `src/HalbornLoans.sol`'s method `getLoan` allows for draining the protocol funds.
@@ -55,7 +55,7 @@ With:
 ```solidity
 totalCollateral[msg.sender] - usedCollateral[msg.sender] >= amount
 ```
-<br/>
+<br/><br/>
 
 
 ### <a id="H-4" name="H-4"></a>[H-4] Wrong collateral record update at `src/HalbornLoans.sol`'s method `returnLoan` leading to loss for the borrower.
@@ -70,7 +70,7 @@ With:
 ```solidity
 usedCollateral[msg.sender] -= amount`
 ```
-<br/>
+<br/><br/>
 
 
 ### <a id="H-5" name="H-5"></a>[H-5] Method `setMerkleRoot` inside `src/HalbornNFT.sol` lacks of access control.
@@ -81,7 +81,7 @@ Consider setting permissions only for the smart contract owner to be able to req
 ```solidity
 function setMerkleRoot(bytes32 merkleRoot_) public onlyOwner
 ```
-<br/>
+<br/><br/>
 
 
 ### <a id="H-6" name="H-6"></a>[H-6] Internal method `_authorizeUpgrade` lacks of access control for upgrading the UUPS implementation.
@@ -101,7 +101,7 @@ The vulnerability exists at the contracts listed below:
 - `src/HalbornNFT.sol`
 - `src/HalbornToken.sol`
 - `src/HalbornLoans.sol`
-<br/>
+<br/><br/>
 
 
 ### <a id="H-7" name="H-7"></a>[H-7] Method `multicall` inside `src/MulticallUpgradeable.sol` allows for malicious batching of logic.
@@ -120,13 +120,13 @@ With:
 ```solidity
 require(!_exists(id), "Token already minted");
 ```
-<br/>
+<br/><br/>
 
 
 ### <a id="M-2" name="M-2"></a>[M-2] Method `mintBuyWithETH` inside `src/HalbornNFT.sol` includes NFT ID collision leading to DOS when minting NFTs.
 
 Two methods inside `src/HalbornNFT.sol` can be used to mint new NFTs - methods `mintAirdrops` and `mintBuyWithETH`. `mintAirdrops` mints NFT by a given NFT ID, `mintBuyWithETH` mints NFT by a state counter `idCounter`. The problem is that the counter starts from value 0 and it increases by 1 everytime `mintBuyWithETH` is called. Let's suppose Alice minted NFT ID 2 by requesting `mintAirdrops` and now Bob and Jake are requesting `mintBuyWithETH`. Bob will successfully mint his NFT with ID 1, but Jake will fail, because `mintBuyWithETH` will try to mint a NFT with ID 2, but this NFT ID has been already minted by Alice. The result is collision of the NFT IDs leading to a possible DOS of method `mintBuyWithETH`.
-<br/>
+<br/><br/>
 
 
 ## Low issues description
@@ -156,7 +156,7 @@ constructor() {
 }
 
 ```
-<br/>
+<br/><br/>
 
 
 ### <a id="L-2" name="L-2"></a>[L-2] Missing event emissions for crucial state changes in all contracts.
@@ -165,7 +165,7 @@ Missing events in significant scenarios, such as important configuration changes
 - `src/HalbornNFT.sol`
 - `src/HalbornToken.sol`
 - `src/HalbornLoans.sol`
-<br/>
+<br/><br/>
 
 
 ### <a id="L-3" name="L-3"></a>[L-3] Contract `src/MulticallUpgradeable.sol` is a local fork of the OpenZeppelin’s `MulticallUpgradeable.sol` which might become outdated in a future OZ library upgrade.
@@ -176,7 +176,7 @@ import {AddressUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/u
 import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 ```
 This could lead to future issues if OZ decide to upgrade the imported libraries leading to incompatibility with local forked `src/MulticallUpgradeable.sol`. The solution is to include in the local fork all of the files used by the `src/MulticallUpgradeable.sol`.
-<br/>
+<br/><br/>
 
 
 ### <a id="L-4" name="L-4"></a>[L-4] Variables defined with the `immutable` keyword are incompatible with UUPS the concept.
