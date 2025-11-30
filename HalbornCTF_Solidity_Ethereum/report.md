@@ -30,7 +30,7 @@
 | [H-7](#H-7) | Method `multicall` inside `MulticallUpgradeable.sol` allows for batching of logic together with accepting `msg.value`. |
 
 ### Low issues description
-### <a name="L-1"></a>[L-1] Missing `_disableInitializers()` inside constructor to prevent implementation from being hijacked.
+### <a id="L-1" name="L-1"></a>[L-1] Missing `_disableInitializers()` inside constructor to prevent implementation from being hijacked.
 
 By putting `_disableInitializers()` in the constructor, this prevents initialization of the implementation contract itself, as extra protection to prevent an attacker from initializing it.
 
