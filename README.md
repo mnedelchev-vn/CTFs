@@ -1,41 +1,22 @@
+## Halborn Solidity EVM CTF
 
-## Instructions
+### Report
+[report.md](./report.md)
 
-** Halborn Offensive Security Engineers that are applying for a full time position, please audit these contracts and provide us with a Security audit report.**
+### Challenge
 
-Please include:
+There are 3 contracts in the `src`folder:
+- HalbornLoans.sol
+- HalbornNFT.sol
+- HalbornToken.sol
 
-Findings Risk Description Code Section Recommendation on Improvement
+There are several vulnerabilities that were found in live projects. 
 
-Only PDF format will be accepted. Docx, txt ... formats will be automatically rejected.
+**We do not want a report that is full of low/informational issues such as missing zero address checks or floating pragmas.
+We are looking for engineers who can fully understand the purpose of these contracts and can find all critical/high issues in them.**
 
-## Request
+Most Halborn engineers use Foundry for manual testing. We would really value any critical/high finding that also have a Foundry test attached as a Proof of Concept to reproduce the issue. The Foundry project was already created.
 
-Halborn requests you to audit these smart contracts. Not only look at the code risks but also the economic aspects.
+https://github.com/foundry-rs/foundry
 
-# CTF List
-
-
-## Solidity CTF for Ethereum 
-
-./HalbornCTF_Solidity_Ethereum
-
-## Solana CTF Based on Rust
-
-./HalbornCTF_Rust_Solana/
-
-## Substrate CTF Based on Rust
-
-./HalbornCTF_Rust_Substrate/
-
-## Cosmos CTF Based on Golang
-
-./HalbornCTF_Golang_Cosmos/
-
-## CosmWasm CTF Based on Rust
-
-./HalbornCTF_Rust_CosmWasm/
-
-## NEAR CTF Based on Rust
-
-./HalbornCTF_Rust_NEAR/
+**Hint**: The CTF contracts (among all) contain at least 5 different critical issues.
